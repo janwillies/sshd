@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-  - docker build -t willies/sshd:${TRAVIS_COMMIT::8} -t willies/sshd:latest .
+  - docker build -t willies/sshd:${TRAVIS_COMMIT::7} -t willies/sshd:latest .
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push willies/sshd:${TRAVIS_COMMIT::8}
+  - docker push willies/sshd:${TRAVIS_COMMIT::7}
   - docker push willies/sshd:latest
