@@ -8,6 +8,8 @@ RUN dnf -y install vim wget git tmux python3 \
     openssh-server passwd tree procps-ng xz gcc \
     && dnf clean all
 
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
+
 EXPOSE 22
 
 COPY entrypoint.sh /entrypoint.sh

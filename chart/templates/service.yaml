@@ -4,6 +4,9 @@ metadata:
   name: {{ template "fullname" . }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    dns: route53
+  annotations:
+    domainName: {{ .Values.domainName | quote }}
 spec:
   type: {{ .Values.service.type }}
   ports:
