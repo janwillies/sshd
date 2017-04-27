@@ -3,11 +3,8 @@ sudo: required
 services:
   - docker
 
-before_install:
-  - docker info
-
 script:
-  - docker build -t willies/sshd:$TRAVIS_COMMIT -t willies/sshd:latest .
+  - docker build -t willies/sshd:${TRAVIS_COMMIT::8} -t willies/sshd:latest .
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker push willies/sshd:$TRAVIS_COMMIT
+  - docker push willies/sshd:${TRAVIS_COMMIT::8}
   - docker push willies/sshd:latest

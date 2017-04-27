@@ -4,8 +4,8 @@ RUN curl http://fission.io/linux/fission > fission \
     && chmod +x fission \
     && mv fission /usr/local/bin/
 
-RUN dnf -y install vim wget git tmux python nodejs \ 
-    openssh-server passwd tree procps-ng \
+RUN dnf -y install vim wget git tmux python3 \ 
+    openssh-server passwd tree procps-ng xz gcc \
     && dnf clean all
 
 EXPOSE 22
@@ -28,15 +28,29 @@ RUN su - user -c "git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.
     && sed -i s/bobby/powerline-plain/ .bashrc
 
 ## golang
-RUN wget -qO- https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz | tar xvz -C /usr/local \
-    && echo PATH=$PATH:/usr/local/go/bin >> .bashrc
+ENV GOLANG_VER=1.8.1
+RUN wget -qO- https://storage.googleapis.com/golang/go${GOLANG_VER}.linux-amd64.tar.gz | tar xz -C /usr/local \
+    && echo PATH=\$PATH:/usr/local/go/bin >> .bashrc \
+    && echo GOPATH=/home/user/go >> .bashrc \
+    && mkdir -p go/{bin,src,pkg} && chown -R user:user go
+
+## glide
+ENV GLIDE_VER=v0.12.3
+RUN wget -qO- https://github.com/Masterminds/glide/releases/download/${GLIDE_VER}/glide-${GLIDE_VER}-linux-amd64.tar.gz | tar xz -C /tmp \
+    && mv /tmp/linux-amd64/glide /usr/bin \
+    && chmod 755 /usr/bin/glide \
+    && rm -rf /tmp/linux-amd64
+
+## nodejs
+ENV NODE_VER=v7.9.0
+RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar.xz | tar xJ -C /usr/local/ \
+    && ln -s /usr/local/node-${NODE_VER}-linux-x64/ /usr/local/node \
+    && echo PATH=\$PATH:/usr/local/node/bin >> .bashrc
 
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
 RUN chown -R user:user .ssh && chmod 700 .ssh \
     && echo FISSION_URL=http://controller.fission >> .bashrc \
     && echo FISSION_ROUTER=http://router.fission >> .bashrc
-
-
 
 ## add IDEs here
