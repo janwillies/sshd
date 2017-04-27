@@ -23,6 +23,11 @@ edit `chart/values.yaml` or leave default
 helm install --name sshd chart/
 ```
 
+## upgrade
+```
+helm upgrade sshd chart/ --set image.tag=6a3e1b48 
+```
+
 ## connect
 username is `user`, password printed in `docker logs`
 ```

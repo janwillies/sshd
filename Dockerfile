@@ -49,7 +49,7 @@ RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar
 
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
-RUN chown -R user:user .ssh && chmod 700 .ssh \
+RUN chown -R user:user .ssh && chmod -R 700 .ssh \
     && echo export FISSION_URL=http://controller.fission >> .bashrc \
     && echo export FISSION_ROUTER=http://router.fission >> .bashrc
 
