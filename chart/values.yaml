@@ -1,0 +1,21 @@
+# Default values for sshd.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: willies/sshd
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: sshd
+  type: LoadBalancer
+  externalPort: 22
+  internalPort: 22
+resources:
+  limits:
+    cpu: 1
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 512Mi
+
