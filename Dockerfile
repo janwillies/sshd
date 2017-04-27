@@ -28,7 +28,7 @@ RUN su - user -c "git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.
     && sed -i s/bobby/powerline-plain/ .bashrc
 
 ## golang
-RUN wget -qO- https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz | tar xvz -C /usr/local \
+RUN wget -qO- https://storage.googleapis.com/golang/go1.8.1.linux-amd64.tar.gz | tar xz -C /usr/local \
     && echo PATH=$PATH:/usr/local/go/bin >> .bashrc
 
 ## pubkeys
@@ -36,7 +36,5 @@ COPY authorized_keys .ssh/authorized_keys
 RUN chown -R user:user .ssh && chmod 700 .ssh \
     && echo FISSION_URL=http://controller.fission >> .bashrc \
     && echo FISSION_ROUTER=http://router.fission >> .bashrc
-
-
 
 ## add IDEs here
