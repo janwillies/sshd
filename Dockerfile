@@ -31,7 +31,7 @@ RUN su - user -c "git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.
 ENV GOLANG_VER=1.8.1
 RUN wget -qO- https://storage.googleapis.com/golang/go${GOLANG_VER}.linux-amd64.tar.gz | tar xz -C /usr/local \
     && echo PATH=\$PATH:/usr/local/go/bin >> .bashrc \
-    && echo GOPATH=/home/user/go >> .bashrc \
+    && echo export GOPATH=/home/user/go >> .bashrc \
     && mkdir -p go/{bin,src,pkg} && chown -R user:user go
 
 ## glide
@@ -50,7 +50,7 @@ RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
 RUN chown -R user:user .ssh && chmod 700 .ssh \
-    && echo FISSION_URL=http://controller.fission >> .bashrc \
-    && echo FISSION_ROUTER=http://router.fission >> .bashrc
+    && echo export FISSION_URL=http://controller.fission >> .bashrc \
+    && echo export FISSION_ROUTER=http://router.fission >> .bashrc
 
 ## add IDEs here
