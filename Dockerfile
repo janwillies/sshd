@@ -53,6 +53,8 @@ RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar
 COPY authorized_keys .ssh/authorized_keys 
 RUN chown -R user:user .ssh && chmod -R 700 .ssh \
     && echo export FISSION_URL=http://controller.fission >> .bashrc \
-    && echo export FISSION_ROUTER=http://router.fission >> .bashrc
+    && echo export FISSION_ROUTER=http://router.fission >> .bashrc \
+    && echo export FISSION_LOGDB=http://influxdb.fission:8086 >> .bashrc \
+    && echo alias go-function-build=\"go build -buildmode=plugin -o function.so\" >> .bashrc
 
 ## add IDEs here
