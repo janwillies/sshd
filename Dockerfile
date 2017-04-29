@@ -1,11 +1,12 @@
-FROM docker.io/fedora
+FROM registry.fedoraproject.org/fedora:25
 
 RUN curl http://fission.io/linux/fission > fission \
     && chmod +x fission \
     && mv fission /usr/local/bin/
 
-RUN dnf -y install vim wget git tmux python3 \ 
-    openssh-server passwd tree procps-ng xz gcc \
+RUN dnf -y install vim wget git tmux python \ 
+    openssh-server passwd tree procps-ng xz \ 
+    gcc unzip tar \
     && dnf clean all
 
 RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
@@ -48,6 +49,20 @@ ENV NODE_VER=v7.9.0
 RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar.xz | tar xJ -C /usr/local/ \
     && ln -s /usr/local/node-${NODE_VER}-linux-x64/ /usr/local/node \
     && echo PATH=\$PATH:/usr/local/node/bin >> .bashrc
+
+## kubectl
+ENV KUBE_VER=v1.6.2
+RUN curl -O https://storage.googleapis.com/kubernetes-release/release/${KUBE_VER}/bin/linux/amd64/kubectl \
+    && chmod 755 kubectl \
+    && mv kubectl /usr/bin/kubectl
+
+## kubeless
+ENV KUBELESS_VER=0.0.11
+RUN curl -O https://github.com/bitnami/kubeless/releases/download/${KUBELESS_VER}/kubeless_linux-amd64.zip \
+    && unzip kubeless_linux-amd64.zip \
+    && rm kubeless_linux-amd64.zip \
+    && mv kubeless_linux-amd64/kubeless /usr/bin/kubeless \
+    && rm -r kubeless_linux-amd64
 
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
