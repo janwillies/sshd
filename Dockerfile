@@ -58,11 +58,11 @@ RUN curl -O https://storage.googleapis.com/kubernetes-release/release/${KUBE_VER
 
 ## kubeless
 ENV KUBELESS_VER=0.0.11
-RUN curl -O https://github.com/bitnami/kubeless/releases/download/${KUBELESS_VER}/kubeless_linux-amd64.zip \
+RUN curl -LO https://github.com/bitnami/kubeless/releases/download/${KUBELESS_VER}/kubeless_linux-amd64.zip \
     && unzip kubeless_linux-amd64.zip \
     && rm kubeless_linux-amd64.zip \
     && mv kubeless_linux-amd64/kubeless /usr/bin/kubeless \
-    && rm -r kubeless_linux-amd64
+    && rm -fr kubeless_linux-amd64
 
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
