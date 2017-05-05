@@ -1,12 +1,7 @@
 FROM registry.fedoraproject.org/fedora:25
 
-RUN curl http://fission.io/linux/fission > fission \
-    && chmod +x fission \
-    && mv fission /usr/local/bin/
-
-RUN dnf -y install vim wget git tmux python \ 
-    openssh-server passwd tree procps-ng xz \ 
-    gcc unzip tar \
+RUN dnf -y update && dnf -y install vim wget git tmux python \ 
+    openssh-server passwd tree procps-ng xz gcc unzip tar \
     && dnf clean all
 
 RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
@@ -45,13 +40,13 @@ RUN wget -qO- https://github.com/Masterminds/glide/releases/download/${GLIDE_VER
     && rm -rf /tmp/linux-amd64
 
 ## nodejs
-ENV NODE_VER=v7.9.0
+ENV NODE_VER=v6.10.3
 RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar.xz | tar xJ -C /usr/local/ \
     && ln -s /usr/local/node-${NODE_VER}-linux-x64/ /usr/local/node \
     && echo PATH=\$PATH:/usr/local/node/bin >> .bashrc
 
 ## kubectl
-ENV KUBE_VER=v1.6.2
+ENV KUBE_VER=v1.5.7
 RUN curl -O https://storage.googleapis.com/kubernetes-release/release/${KUBE_VER}/bin/linux/amd64/kubectl \
     && chmod 755 kubectl \
     && mv kubectl /usr/bin/kubectl
@@ -66,8 +61,6 @@ RUN curl -LO https://github.com/bitnami/kubeless/releases/download/${KUBELESS_VE
 
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
-RUN chown -R user:user .ssh && chmod -R 700 .ssh \
-    && echo export FISSION_URL=http://controller.fission >> .bashrc \
-    && echo export FISSION_ROUTER=http://router.fission >> .bashrc
+RUN chown -R user:user .ssh && chmod -R 700 .ssh
 
 ## add IDEs here

@@ -30,3 +30,12 @@ spec:
             port: {{ .Values.service.internalPort }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
+        volumeMounts:
+          - name: kubeconfig
+            mountPath: /home/user/.kube/
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: {{ template "fullname" . }}
+            defaultMode: 420
+
