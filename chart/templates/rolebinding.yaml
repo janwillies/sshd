@@ -1,9 +1,10 @@
 {{ if .Values.rbac }}
+---
 kind: RoleBinding
 # apiVersion: rbac.authorization.k8s.io/v1beta1
 apiVersion: rbac.authorization.k8s.io/v1alpha1
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "fullname" . }}-edit
   namespace: default
   # namespace: {{ .Release.Namespace }}
   labels:
@@ -15,5 +16,37 @@ subjects:
 roleRef:
   kind: ClusterRole
   name: edit
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+# apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1alpha1
+metadata:
+  name: {{ template "fullname" . }}-kubeless-edit
+  namespace: default
+  # namespace: {{ .Release.Namespace }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"  
+subjects:
+  - kind: User
+    name: user@ssh.containercluster.net
+roleRef:
+  kind: ClusterRole
+  name: {{ template "fullname" . }}-kubeless-edit
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: ClusterRoleBinding
+# apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1alpha1
+metadata:
+  name: {{ template "fullname" . }}-kubeless-read
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"  
+subjects:
+  - kind: User
+    name: user@ssh.containercluster.net
+roleRef:
+  kind: ClusterRole
+  name: {{ template "fullname" . }}-kubeless-read
   apiGroup: rbac.authorization.k8s.io
 {{ end }}
