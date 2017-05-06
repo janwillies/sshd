@@ -1,0 +1,29 @@
+---
+# apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1alpha1
+kind: ClusterRole
+metadata:
+  name: {{ template "fullname" . }}-kubeless-edit
+rules:
+- apiGroups:
+  - k8s.io
+  resources:
+  - functions
+  verbs:
+  - "*"
+---
+# apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1alpha1
+kind: ClusterRole
+metadata:
+  name: {{ template "fullname" . }}-kubeless-read
+rules:
+- apiGroups:
+  - k8s.io
+  resources:
+  - functions
+  verbs:
+  - get
+  - list
+  - watch
+  
