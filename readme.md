@@ -25,7 +25,7 @@ helm install --name sshd chart/
 
 ## upgrade
 ```
-helm upgrade sshd chart/ --set image.tag=6a3e1b48 
+helm upgrade sshd chart/ -f chart/values-dev.yaml --set image.tag=6a3e1b48
 ```
 
 ## connect
