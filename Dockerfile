@@ -2,6 +2,7 @@ FROM registry.fedoraproject.org/fedora:25
 
 RUN dnf -y update && dnf -y install vim wget git tmux python \ 
     openssh-server passwd tree procps-ng xz gcc unzip tar \
+    nano joe \
     && dnf clean all
 
 RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
