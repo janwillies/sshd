@@ -27,7 +27,7 @@ RUN su - user -c "git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.
     && sed -i s/bobby/powerline-plain/ .bashrc
 
 ## golang
-ENV GOLANG_VER=1.8.1
+ENV GOLANG_VER=1.9
 RUN wget -qO- https://storage.googleapis.com/golang/go${GOLANG_VER}.linux-amd64.tar.gz | tar xz -C /usr/local \
     && echo PATH=\$PATH:/usr/local/go/bin >> .bashrc \
     && echo export GOPATH=/home/user/go >> .bashrc \
@@ -41,19 +41,27 @@ RUN wget -qO- https://github.com/Masterminds/glide/releases/download/${GLIDE_VER
     && rm -rf /tmp/linux-amd64
 
 ## nodejs
-ENV NODE_VER=v6.10.3
+ENV NODE_VER=v6.11.3
 RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar.xz | tar xJ -C /usr/local/ \
     && ln -s /usr/local/node-${NODE_VER}-linux-x64/ /usr/local/node \
     && echo PATH=\$PATH:/usr/local/node/bin >> .bashrc
 
 ## kubectl
-ENV KUBE_VER=v1.5.7
+ENV KUBE_VER=v1.7.6
 RUN curl -O https://storage.googleapis.com/kubernetes-release/release/${KUBE_VER}/bin/linux/amd64/kubectl \
     && chmod 755 kubectl \
     && mv kubectl /usr/bin/kubectl
+    
+## helm
+ENV HELM_VER=v2.6.1
+RUN https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VER}-linux-amd64.tar.gz \
+    && tar xvzf helm-${HELM_VER}-linux-amd64.tar.gz \
+    && chmod 755 linux-amd64/helm \
+    && mv linux-amd64/helm /usr/local/bin \
+    && rm -rf linux-amd64
 
 ## kubeless
-ENV KUBELESS_VER=0.0.11
+ENV KUBELESS_VER=0.1.0
 RUN curl -LO https://github.com/bitnami/kubeless/releases/download/${KUBELESS_VER}/kubeless_linux-amd64.zip \
     && unzip kubeless_linux-amd64.zip \
     && rm kubeless_linux-amd64.zip \
