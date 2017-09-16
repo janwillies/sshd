@@ -1,0 +1,3 @@
+kubeconfig
+chart/templates/kubeconfig.yaml
+chart/values-training.yaml
