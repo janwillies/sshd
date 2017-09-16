@@ -4,9 +4,8 @@ metadata:
   name: {{ template "fullname" . }}
   labels:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    dns: route53
   annotations:
-    domainName: {{ .Values.domainName | quote }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.domainName | quote }}
     service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "900"
 spec:
   type: {{ .Values.service.type }}
