@@ -54,7 +54,7 @@ RUN curl -O https://storage.googleapis.com/kubernetes-release/release/${KUBE_VER
     
 ## helm
 ENV HELM_VER=v2.6.1
-RUN https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VER}-linux-amd64.tar.gz \
+RUN curl -O https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VER}-linux-amd64.tar.gz \
     && tar xvzf helm-${HELM_VER}-linux-amd64.tar.gz \
     && chmod 755 linux-amd64/helm \
     && mv linux-amd64/helm /usr/local/bin \
