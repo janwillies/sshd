@@ -64,8 +64,8 @@ RUN curl -O https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VER}-linu
 ENV KUBELESS_VER=v0.1.0
 RUN curl -LO https://github.com/kubeless/kubeless/releases/download/${KUBELESS_VER}/kubeless_linux-amd64.zip \
     && unzip kubeless_linux-amd64.zip \
-    && mv kubeless_linux-amd64/kubeless /usr/bin/kubeless \
-    && rm -fr kubeless_linux-amd64 kubeless_linux-amd64.zip
+    && mv bundles/kubeless_linux-amd64/kubeless /usr/bin/kubeless \
+    && rm -fr bundles kubeless_linux-amd64.zip
 
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
