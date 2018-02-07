@@ -1,8 +1,7 @@
-FROM registry.fedoraproject.org/fedora:25
+FROM registry.fedoraproject.org/fedora:27
 
 RUN dnf -y update && dnf -y install vim wget git tmux python \ 
-    openssh-server passwd tree procps-ng xz gcc unzip tar \
-    nano joe \
+    openssh-server passwd tree procps-ng xz gcc unzip tar docker \
     && dnf clean all
 
 RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
@@ -27,7 +26,7 @@ RUN su - user -c "git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.
     && sed -i s/bobby/powerline-plain/ .bashrc
 
 ## golang
-ENV GOLANG_VER=1.9
+ENV GOLANG_VER=1.9.3
 RUN wget -qO- https://storage.googleapis.com/golang/go${GOLANG_VER}.linux-amd64.tar.gz | tar xz -C /usr/local \
     && echo PATH=\$PATH:/usr/local/go/bin >> .bashrc \
     && echo export GOPATH=/home/user/go >> .bashrc \
@@ -41,19 +40,19 @@ RUN wget -qO- https://github.com/Masterminds/glide/releases/download/${GLIDE_VER
     && rm -rf /tmp/linux-amd64
 
 ## nodejs
-ENV NODE_VER=v6.11.3
+ENV NODE_VER=v8.9.4
 RUN wget -qO- https://nodejs.org/dist/${NODE_VER}/node-${NODE_VER}-linux-x64.tar.xz | tar xJ -C /usr/local/ \
     && ln -s /usr/local/node-${NODE_VER}-linux-x64/ /usr/local/node \
     && echo PATH=\$PATH:/usr/local/node/bin >> .bashrc
 
 ## kubectl
-ENV KUBE_VER=v1.7.6
+ENV KUBE_VER=v1.9.2
 RUN curl -O https://storage.googleapis.com/kubernetes-release/release/${KUBE_VER}/bin/linux/amd64/kubectl \
     && chmod 755 kubectl \
     && mv kubectl /usr/bin/kubectl
     
 ## helm
-ENV HELM_VER=v2.6.1
+ENV HELM_VER=v2.8.0
 RUN curl -O https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VER}-linux-amd64.tar.gz \
     && tar xvzf helm-${HELM_VER}-linux-amd64.tar.gz \
     && chmod 755 linux-amd64/helm \
@@ -61,11 +60,11 @@ RUN curl -O https://storage.googleapis.com/kubernetes-helm/helm-${HELM_VER}-linu
     && rm -rf linux-amd64
 
 ## kubeless
-ENV KUBELESS_VER=v0.1.0
-RUN curl -LO https://github.com/kubeless/kubeless/releases/download/${KUBELESS_VER}/kubeless_linux-amd64.zip \
-    && unzip kubeless_linux-amd64.zip \
-    && mv bundles/kubeless_linux-amd64/kubeless /usr/bin/kubeless \
-    && rm -fr bundles kubeless_linux-amd64.zip
+# ENV KUBELESS_VER=v0.1.0
+# RUN curl -LO https://github.com/kubeless/kubeless/releases/download/${KUBELESS_VER}/kubeless_linux-amd64.zip \
+#     && unzip kubeless_linux-amd64.zip \
+#     && mv bundles/kubeless_linux-amd64/kubeless /usr/bin/kubeless \
+#     && rm -fr bundles kubeless_linux-amd64.zip
 
 ## pubkeys
 COPY authorized_keys .ssh/authorized_keys 
